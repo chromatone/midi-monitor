@@ -1,3 +1,3 @@
-# Chromatone
-Interactive color music theory
-by Development Foundation for Uneversalization, Cooperation and Creativity
+# MIDI monitor
+
+Use a Web MIDI enabled browser to monitor incoming MIDI signals and route them in any configuration.
