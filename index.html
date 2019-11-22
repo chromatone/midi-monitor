@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>MIDI monitor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <script type="module">
+    Vue.prototype.$midiBus = new Vue(); // Global event bus
+    import {midiBus} from './js/midi-bus.js'
+    import {midiMonitor} from './js/midi-monitor.js'
+    import Vue from './js/vue.min.js'
+    const ct = new Vue({
+      el:"#midi-monitor",
+      components: {
+        midiBus,
+        midiMonitor
+      },
+      data: {
+        channels:{}
+      }
+    })
+  </script>
+</head>
+
+
+<body>
+
+
+  <div id="midi-monitor">
+    <midi-bus :channels.sync="channels"></midi-bus>
+    <midi-monitor :channels="channels"></midi-monitor>
+  </div>
+
+
+</body>
+
+</html>
