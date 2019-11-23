@@ -1,102 +1,23 @@
-import WebMidi from "./webmidi.js";
+import WebMidi from "./webmidi.js"
+import router from "./router.js"
 
-export const midiBus = {
+export default {
+  components: {
+    router
+  },
   template:`
     <div class="midi-bus">
 
-      <div class="devices">
-        <span class="status" :class="{'active':midi.supported, 'error':!midi.supported}">
-          MIDI</span><span v-for="input in midi.inputs" class="status">{{input.name}}</span>
+      <div class="bar">
+        <div class="status" :class="{'active':midi.supported, 'error':!midi.supported}">
+          MIDI<a target="_blank" href="https://caniuse.com/#search=web%20midi" v-if="!midi.supported"> NOT SUPPORTED</a>
+        </div>
+        <div @click="selected==input ? selected=null : selected=input" v-for="input in midi.inputs" class="status" :class="{selected:input==selected}">{{input.name}}</div>
       </div>
-      <component is="style">
-      .status {
-        border:#999 2px solid;
-        border-radius:2px;
-        color:#999;
-        padding:4px;
-        margin:4px;
-        line-height: 2;
-        cursor: pointer;
-      }
-
-      .status.active {
-      border-color:green;
-      color:green;
-      }
-
-      .status.error {
-      border-color:red;
-      color:red;
-      }
-
-      .midi-bus {
-      padding: 6px;
-      font-size:12px;
-      }
-
-      .absolute {
-        position:absolute;
-      }
-
-      .midi-monitor {
-        display:flex;
-        height:100%;
-        align-items: stretch;
-      }
-
-      .midi-channel {
-        max-height: 100%;
-        flex:1 0 14px;
-        margin:0 2px;
-      	display: flex;
-      	flex-direction: column;
-      	flex-wrap: nowrap;
-      	justify-content: stretch;
-      	align-items: stretch;
-      	align-content: center;
-        background-color: hsla(60,0%,50%,0.1);
-      }
-
-      .midi-cc {
-        flex:1 1 6%;
-        display: flex;
-      	flex-direction: row;
-      	flex-wrap: nowrap;
-      	align-items:baseline;
-      	align-content:center;
-
-      }
-
-      .cc-bar {
-        background-color: #bbb;
-        height:100%;
-        display: flex;
-      	flex-direction: row;
-      	flex-wrap: nowrap;
-      	align-items:center;
-      	align-content:center;
-      }
-
-      .midi-notes.channel-name {
-        color:black;
-      }
-
-      .midi-notes {
-        padding:4px;
-        flex:1 1 6%;
-      	display: flex;
-      	flex-direction: row;
-      	flex-wrap: nowrap;
-      	justify-content: center;
-      	align-items: center;
-      	align-content: center;
-        color:white;
-        background-color: hsla(60,0%,60%,0.2);
-      }
-      </component>
+      <router :input="selected"></router>
     </div>
   `,
-  props: ['absolute'],
+  props: ['absolute','channels'],
   data() {
     return {
       midi: {
@@ -104,22 +25,22 @@ export const midiBus = {
         inputs:WebMidi.inputs,
         outputs:WebMidi.outputs
       },
-      opz:{},
-      lc:{},
-      channels:{}
+      selected:WebMidi.inputs[0]||null,
+      inNote: {note: {channel:'', nameOct:''}},
+      inCc: {channel:'', controller: {number:''}, value:''}
     }
   },
   watch: {
     'midi.inputs': function (inputs) {
-      inputs.forEach((inp) => {
-        console.log(inp)
-        this.setListeners(inp)
+      inputs.forEach((input) => {
+        this.setListeners(input)
       })
     }
   },
   methods: {
     resetChannels() {
-      this.channels={};
+      this.channels={}
+      this.$emit('update:channels', this.channels)
     },
     checkChannel(ch) {
       if (!this.channels[ch]) {
@@ -132,11 +53,16 @@ export const midiBus = {
       note.id=ev.note.name+note.octave+time.getTime();
       note.nameOct=note.name+note.octave;
       note.channel=ev.channel;
-      note.velocity=ev.velocity;
+      if (ev.type=='noteoff') {
+        note.velocity=0;
+      } else {
+        note.velocity=ev.velocity;
+      }
       note.digit = (note.number+3)%12;
       return note
     },
     noteInOn(ev) {
+      this.inNote=ev;
       let note = this.makeNote(ev)
       this.$midiBus.$emit('noteinon'+note.channel,note);
       this.checkChannel(ev.channel);
@@ -145,13 +71,16 @@ export const midiBus = {
     },
     noteInOff(ev) {
       let note = this.makeNote(ev)
+      let nameOct = note.nameOct;
+      let ch = ev.channel
       this.$midiBus.$emit('noteinoff'+note.channel, note)
-      if (this.channels[ev.channel] && this.channels[ev.channel].notes && this.channels[ev.channel].notes[note.nameOct]) {
-        this.channels[ev.channel].notes[note.nameOct].velocity=0;
+      if (this.channels[ch] && this.channels[ch].notes && this.channels[ch].notes[nameOct]) {
+        this.$set(this.channels[ch].notes, nameOct, note)
       }
       this.$emit('update:channels', this.channels)
     },
     ccInChange(ev) {
+      this.inCc=ev;
       this.$midiBus.$emit(ev.channel+'cc'+ev.controller.number,ev.value)
       this.checkChannel(ev.channel)
       this.$set(this.channels[ev.channel].cc,ev.controller.number,ev.value);
@@ -184,42 +113,6 @@ export const midiBus = {
       input.addListener('controlchange', "all", this.ccInChange);
       input.addListener('stop', 'all', this.reset)
 
-    },
-    onMIDISuccess(midiAccess) {
-      console.log( "MIDI ready!", midiAccess );
-      midiAccess.inputs.forEach(input => {
-        if (input.name == 'OP-Z') {
-          this.opz.in=input;
-          this.opz.in.onmidimessage = this.opzMIDIMessage
-        }
-        if (input.name == 'Launch Control XL') {
-          this.lc.in = input;
-          this.lc.in.onmidimessage = this.lcMIDIMessage
-        }
-      })
-      midiAccess.outputs.forEach(output => {
-        console.log(output.name)
-        if (output.name == 'OP-Z') {
-          this.opz.out=output
-        } else if (output.name == 'Launch Control XL') {
-          this.lc.out = output
-        }
-      })
-    },
-    onMIDIFailure(msg) {
-      console.log( "Failed to get MIDI access - " + msg );
-    },
-    opzMIDIMessage(event) {
-      if (event.data == 248) {return}
-      if(event.data[1]!=1) {
-        this.lc.out.send(event.data, event.timestamp)
-      }
-    },
-    lcMIDIMessage(event) {
-      if(true) {
-        this.opz.out.send(event.data, event.timestamp)
-      }
-
     }
   },
   computed: {
@@ -230,7 +123,7 @@ export const midiBus = {
       WebMidi.enable();
     }
 
-    navigator.requestMIDIAccess().then( this.onMIDISuccess, this.onMIDIFailure );
+
   /*  this.$midiBus.$on('noteouton', this.noteOutOn)
     this.$midiBus.$on('noteoutoff', this.noteOutOff) */
   }

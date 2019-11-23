@@ -6,11 +6,12 @@
   <title>MIDI monitor</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
   <link rel="stylesheet" href="css/styles.css" />
+  <script src="js/vue.min.js"></script>
   <script type="module">
     Vue.prototype.$midiBus = new Vue(); // Global event bus
-    import {midiBus} from './js/midi-bus.js'
-    import {midiMonitor} from './js/midi-monitor.js'
-    import Vue from './js/vue.min.js'
+    import midiBus from './js/midi-bus.js'
+    import midiMonitor from './js/midi-monitor.js'
+
     const ct = new Vue({
       el:"#midi-monitor",
       components: {

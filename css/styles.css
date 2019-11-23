@@ -1,7 +1,7 @@
 
 #midi-monitor {
   width: 100%;
-  height: 100%;
+  height: 100%
 }
 
 html,
@@ -10,4 +10,122 @@ body {
   width: 100%;
   height: 100%;
   font-family: 'Ubuntu', sans-serif;
+}
+
+.bar {
+  display:flex;
+  flex-wrap: wrap;
+}
+
+.bar.second {
+  background-color: hsla(0,0%,50%,0.1)
+}
+
+.status {
+  border:#999 2px solid;
+  border-radius:2px;
+  color:#999;
+  padding:0 4px;
+  margin:4px;
+  line-height: 2;
+  cursor: pointer;
+  position:relative;
+  text-align: center;
+}
+
+.status.selected {
+  background-color: #bbb;
+  color:#000;
+}
+
+.status.active {
+border-color:green;
+color:green;
+}
+
+.status.error {
+border-color:red;
+color:red;
+}
+
+.status.note {
+  width:3em;
+}
+
+.status.cc {
+  width:4em;
+}
+
+.status .cc-fill {
+  position:absolute;
+  background-color: hsla(0,0%,50%,0.5);
+  height:100%;
+  margin:0 -4px;
+}
+
+.midi-bus {
+padding: 6px;
+font-size:12px;
+}
+
+.absolute {
+  position:absolute;
+  top:0;
+  bottom:0;
+}
+
+.midi-monitor {
+  display:flex;
+  height:100%;
+  align-items: stretch;
+}
+
+.midi-channel {
+  max-height: 100%;
+  flex:1 0 14px;
+  margin:0 2px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: stretch;
+  align-items: stretch;
+  align-content: center;
+  background-color: hsla(60,0%,50%,0.1);
+}
+
+.midi-cc {
+  flex:1 1 6%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items:baseline;
+  align-content:center;
+
+}
+
+.cc-bar {
+  background-color: #bbb;
+  height:100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items:center;
+  align-content:center;
+}
+
+.midi-notes.channel-name {
+  color:black;
+}
+
+.midi-notes {
+  padding:4px;
+  flex:1 1 6%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  color:white;
+  background-color: hsla(60,0%,60%,0.2);
 }
