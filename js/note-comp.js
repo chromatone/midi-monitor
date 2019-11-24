@@ -4,13 +4,11 @@ import WebMidi from "./webmidi.js"
 
 export default {
   template: `
-    <div
-      @mousedown.stop.prevent= "playNote(note"
-      @mouseup.stop.prevent= "stopNote(note)"
-      @mouseout.stop.prevent= "stopNote(note)"
-      @touchstart.stop.prevent="playNote(note"
-      @touchend.stop.prevent="stopNote(note)"
-      @touchcancel.stop.prevent="stopNote(note)"
+    <div @mousedown="playNote(note)"
+          @mouseup="stopNote(note)"
+          @mouseout="stopNote(note)"
+          @touchstart="playNote(note)"
+          @touchend="stopNote(note)"
        :style="{backgroundColor:color,order:127-note.number}"   class="midi-notes">
       {{note.name}}{{note.octave}}
     </div>

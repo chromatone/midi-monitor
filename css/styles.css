@@ -104,13 +104,19 @@ font-size:12px;
 }
 
 .cc-bar {
-  background-color: #bbb;
-  height:100%;
+  position:relative;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   align-items:center;
   align-content:center;
+}
+
+.cc-bar .value {
+  background-color: #bbb;
+  position:absolute;
+  height:100%;
+  z-index:-1;
 }
 
 .midi-notes.channel-name {
@@ -127,5 +133,6 @@ font-size:12px;
   align-items: center;
   align-content: center;
   color:white;
+  user-select: none;
   background-color: hsla(60,0%,60%,0.2);
 }
