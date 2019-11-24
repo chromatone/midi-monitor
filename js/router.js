@@ -1,4 +1,4 @@
-
+import WebMidi from "./webmidi.js"
 import {inNote, inCc} from './midi-message.js'
 
 export default {
@@ -6,7 +6,7 @@ export default {
     inNote, inCc
   },
   template:`
-  <div v-if="input" class="bar second">
+  <div v-if="input && input!='APP'" class="bar second">
     <in-note :note="inNote"></in-note>
     <in-cc :cc="inCc"></in-cc>
     <div class="status">→</div>
@@ -28,8 +28,8 @@ export default {
       midiAccess:{},
       inNote:null,
       inCc:null,
-      inputs:[],
-      outputs:[],
+      inputs:WebMidi.inputs,
+      outputs:WebMidi.outputs,
       links: {
         '11055499': {
           ids:['64108181', '10003316']
@@ -44,12 +44,12 @@ export default {
     }
   },
   created() {
-    navigator.requestMIDIAccess().then(this.onMIDISuccess, this.onMIDIFailure);
+
   },
   watch: {
-    input() {
-      this.inNote=null;
-      this.inCc=null;
+    inputs(inputs) {
+      console.log(inputs)
+      this.buildLinks()
     }
   },
   methods: {
@@ -74,56 +74,46 @@ export default {
     getLinks(id) {
       return this.links.filter(link => link.input==this.device.id)
     },
-    changeState(ev) {
-      this.buildLinks()
-    },
-    buildLinks() {
-      this.outputs={};
-      this.midiAccess.outputs.forEach((output,id) => {
-        this.outputs[id]=output;
-      });
 
-      this.midiAccess.inputs.forEach((input,id) => {
-        let link = this.links[id];
+    buildLinks() {
+      WebMidi.removeListener();
+      this.inputs.forEach((input) => {
+        input.on('noteon','all',(event) => {
+          this.inNote = {
+            channel: event.channel,
+            name: event.note.name,
+            octave: event.note.octave
+          }
+        })
+        input.on('controlchange','all', (event) => {
+          this.inCc={
+            channel: event.channel,
+            number:event.controller.number,
+            value:event.value
+          }
+        })
+
+        let link = this.links[input.id];
         if (link) {
           this.$set(link,'outputs', []);
           link.ids.forEach((outId) => {
-            let output = this.midiAccess.outputs.get(outId);
+            let output = WebMidi.getOutputById(outId);
             if (output) {
               link.outputs.push(output);
             }
           })
-          input.onmidimessage = (event) => {
-            if (event.data!=248&&this.input&&event.target.id==this.input.id) {
-              let message = event.data[0] & 0xf0;
-          		let channel = (event.data[0] & 0x0f)+1;
-              if (message==0x90) {
-                this.inNote={
-                  channel,
-                  number:event.data[1]
-                }
-              } else if(message==0xB0) {
-                this.inCc={
-                  channel,
-                  number:event.data[1],
-                  value:event.data[2]
-                }
-              }
-            }
-            link.outputs.forEach(output => output.send(event.data, event.timestamp))
-          }
+
+          input.on('midimessage','all', (event) => {
+              link.outputs.forEach(output => {
+                output._midiOutput.send(event.data,event.timestamp)
+              })
+          })
+
+
+
+
         }
       });
-    },
-    onMIDISuccess(midiAccess) {
-      this.midiAccess=midiAccess;
-      this.buildLinks()
-      midiAccess.onstatechange = this.changeState
-    },
-    onMIDIFailure(msg) {
-      console.log( "Failed to get MIDI access - " + msg );
     }
-
-
   }
 }

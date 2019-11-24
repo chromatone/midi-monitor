@@ -12,7 +12,19 @@ export default {
         <div class="status" :class="{'active':midi.supported, 'error':!midi.supported}">
           MIDI<a target="_blank" href="https://caniuse.com/#search=web%20midi" v-if="!midi.supported"> NOT SUPPORTED</a>
         </div>
+        <div class="status" :class="{selected:selected=='APP'}" @click="selected=='APP' ? selected=null : selected='APP'">
+              APP
+        </div>
         <div @click="selected==input ? selected=null : selected=input" v-for="input in midi.inputs" class="status" :class="{selected:input==selected}">{{input.name}}</div>
+      </div>
+      <div v-if="selected=='APP'" class="bar second">
+        <div :class="{selected:false}"
+              v-for="output in midi.outputs"
+              @click=""
+              :key="output.id"
+              class="status">
+          {{output.name}}
+        </div>
       </div>
       <router :input="selected"></router>
     </div>
@@ -25,9 +37,8 @@ export default {
         inputs:WebMidi.inputs,
         outputs:WebMidi.outputs
       },
-      selected:WebMidi.inputs[0]||null,
-      inNote: {note: {channel:'', nameOct:''}},
-      inCc: {channel:'', controller: {number:''}, value:''}
+      appOutputs:{},
+      selected:WebMidi.inputs[0]||null
     }
   },
   watch: {
@@ -86,21 +97,6 @@ export default {
       this.$set(this.channels[ev.channel].cc,ev.controller.number,ev.value);
       this.$emit('update:channels', this.channels)
     },
-    /*
-    noteOutOn(note) {
-      console.log(note)
-      for (out in this.midi.outputs) {
-        let output = this.midi.outputs[out]
-        output.playNote(note.number, note.channel, {velocity:note.velocity})
-      }
-    },
-    noteOutOff(note) {
-      console.log(note)
-      for (output in this.midi.outputs) {
-        let output = this.midi.outputs[out]
-        output.stopNote(note.number, note.channel, {velocity:note.velocity})
-      }
-    }, */
     reset(e) {
       this.resetChannels();
       this.$midiBus.$emit('reset');
@@ -112,7 +108,6 @@ export default {
       input.addListener('noteoff', "all", this.noteInOff);
       input.addListener('controlchange', "all", this.ccInChange);
       input.addListener('stop', 'all', this.reset)
-
     }
   },
   computed: {
