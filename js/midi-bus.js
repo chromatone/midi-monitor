@@ -9,6 +9,9 @@ export default {
     <div class="midi-bus">
 
       <div class="bar">
+        <a href="https://chromatone.center"><div class="status">
+            <
+        </div></a>
         <div class="status" :class="{'active':midi.supported, 'error':!midi.supported, 'selected':selected=='APP'}"  @click="selected=='APP' ? selected=null : selected='APP'">
           MIDI<a target="_blank" href="https://caniuse.com/#search=web%20midi" v-if="!midi.supported"> NOT SUPPORTED</a>
         </div>
