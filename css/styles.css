@@ -18,7 +18,8 @@ body {
 }
 
 .bar.second {
-  background-color: hsla(0,0%,50%,0.1)
+  padding:4px;
+  background-color: hsla(0,0%,50%,0.2)
 }
 
 .status {
@@ -31,6 +32,10 @@ body {
   cursor: pointer;
   position:relative;
   text-align: center;
+}
+
+.status:active {
+  color:black;
 }
 
 .status.selected {
@@ -110,6 +115,12 @@ font-size:12px;
   flex-wrap: nowrap;
   align-items:center;
   align-content:center;
+  user-select: none;
+}
+
+.cc-bar .cc-key {
+  display:flex;
+  user-select: none;
 }
 
 .cc-bar .value {

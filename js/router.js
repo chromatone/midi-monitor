@@ -25,7 +25,6 @@ export default {
   props:['input'],
   data() {
     return {
-      midiAccess:{},
       inNote:null,
       inCc:null,
       inputs:WebMidi.inputs,
@@ -48,7 +47,6 @@ export default {
   },
   watch: {
     inputs(inputs) {
-      console.log(inputs)
       this.buildLinks()
     }
   },
@@ -104,9 +102,12 @@ export default {
           })
 
           input.on('midimessage','all', (event) => {
+            if(event.data!=248) {
               link.outputs.forEach(output => {
                 output._midiOutput.send(event.data,event.timestamp)
               })
+            }
+
           })
 
 

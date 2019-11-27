@@ -2,11 +2,7 @@ export const inNote = {
   template:`
     <div v-if="note" class="status note">{{note.channel+note.name+note.octave}}</div>
   `,
-  props:['note'],
-  computed: {
-
-  }
-
+  props:['note']
 }
 
 export const inCc = {

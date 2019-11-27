@@ -4,33 +4,57 @@ import WebMidi from "./webmidi.js"
 
 export default {
   template: `
-    <div @mousedown="playNote(note)"
-          @mouseup="stopNote(note)"
-          @mouseout="stopNote(note)"
-          @touchstart="playNote(note)"
-          @touchend="stopNote(note)"
+    <div @mousedown="play(note)"
+          @mouseup="stop(note)"
+          @mouseleave="stop(note,true)"
+          @touchstart.prevent="play(note)"
+          @touchend="stop(note)"
+          @mousemove="change(note)"
+          @touchmove="change(note)"
        :style="{backgroundColor:color,order:127-note.number}"   class="midi-notes">
       {{note.name}}{{note.octave}}
     </div>
   `,
-  props: ['note'],
+  props: ['note','active'],
+  data() {
+    return {
+      pressed:false
+    }
+  },
   computed: {
     color() {
       return 'hsla('+this.note.digit*30+','+this.note.velocity*100+'%,50%,1)'
     }
   },
   methods: {
-    playNote(note) {
-      note.velocity=0.75
+    play(note) {
+      this.pressed=true;
+      note.velocity=100;
+      this.$emit('update:active', true)
+      console.log(this.active)
       WebMidi.outputs.forEach(output => {
         output.playNote(note.nameOct,note.channel)
       })
     },
-    stopNote(note) {
-      note.velocity=0
-      WebMidi.outputs.forEach(output => {
-        output.stopNote(note.nameOct,note.channel)
-      })
+    stop(note,off) {
+      if (this.pressed) {
+        this.pressed=false;
+        note.velocity=0;
+        if (!off)  this.$emit('update:active', false)
+        WebMidi.outputs.forEach(output => {
+          output.stopNote(note.nameOct,note.channel)
+        })
+      }
+    },
+    change(note) {
+      if(this.active && !this.pressed) {
+        this.pressed=true;
+        note.velocity=100;
+        this.$emit('update:active', true)
+        WebMidi.outputs.forEach(output => {
+          output.playNote(note.nameOct,note.channel)
+        })
+      }
     }
   },
 }

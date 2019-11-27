@@ -19,7 +19,10 @@
         midiMonitor
       },
       data: {
-        channels:{}
+        channels:{},
+        cc:12,
+        ch:1,
+        cckey:10
       }
     })
   </script>
@@ -32,6 +35,7 @@
   <div id="midi-monitor">
     <midi-bus :channels.sync="channels"></midi-bus>
     <midi-monitor :channels="channels"></midi-monitor>
+
   </div>
 
 
