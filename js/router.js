@@ -9,7 +9,7 @@ export default {
   <div v-if="input && input!='APP'" class="bar second">
     <in-note :note="inNote"></in-note>
     <in-cc :cc="inCc"></in-cc>
-    <div class="status">→</div>
+    <div class="bar-text">OUT</div>
     <div class="bar">
       <div :class="{selected:checkLink(input.id,output.id)}"
             v-for="output in outputs"

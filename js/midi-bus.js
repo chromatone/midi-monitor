@@ -9,12 +9,13 @@ export default {
     <div class="midi-bus">
 
       <div class="bar">
-        <a href="https://chromatone.center"><div class="status">
-            <
-        </div></a>
-        <div class="status" :class="{'active':midi.supported, 'error':!midi.supported, 'selected':selected=='APP'}"  @click="selected=='APP' ? selected=null : selected='APP'">
-          MIDI<a target="_blank" href="https://caniuse.com/#search=web%20midi" v-if="!midi.supported"> NOT SUPPORTED</a>
+        <div class="chromatoneAd">
+          <a href="https://chromatone.center">chromatone.center</a>
+
         </div>
+        <div class="status" :class="{'active':midi.supported, 'error':!midi.supported, 'selected':selected=='APP'}"  @click="selected=='APP' ? selected=null : selected='APP'"><span v-if="!midi.inputs.length">CONNECT </span>MIDI<a target="_blank" href="https://caniuse.com/#search=web%20midi" v-if="!midi.supported"> NOT SUPPORTED</a>
+        </div>
+        <div v-if="midi.inputs.length" class="bar-text">IN</div>
         <div @click="selected==input ? selected=null : selected=input" v-for="input in midi.inputs" class="status" :class="{selected:input==selected}">{{input.name}}</div>
       </div>
       <div v-if="selected=='APP'" class="bar second">

@@ -31,7 +31,6 @@ export default {
       this.pressed=true;
       note.velocity=100;
       this.$emit('update:active', true)
-      console.log(this.active)
       WebMidi.outputs.forEach(output => {
         output.playNote(note.nameOct,note.channel)
       })
