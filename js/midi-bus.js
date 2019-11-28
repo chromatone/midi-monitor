@@ -9,10 +9,6 @@ export default {
     <div class="midi-bus">
 
       <div class="bar">
-        <div class="chromatoneAd">
-          <a href="https://chromatone.center">chromatone.center</a>
-
-        </div>
         <div class="status" :class="{'active':midi.supported, 'error':!midi.supported, 'selected':selected=='APP'}"  @click="selected=='APP' ? selected=null : selected='APP'"><span v-if="!midi.inputs.length">CONNECT </span>MIDI<a target="_blank" href="https://caniuse.com/#search=web%20midi" v-if="!midi.supported"> NOT SUPPORTED</a>
         </div>
         <div v-if="midi.inputs.length" class="bar-text">IN</div>
@@ -21,14 +17,15 @@ export default {
       <div v-if="selected=='APP'" class="bar second">
 
         <div class="status" @click="start()">
-              	&#9655;
+              	PLAY
         </div>
         <div class="status" @click="stop()">
-              		&#9633;
+              	STOP
         </div>
         <div class="status" @click="clear()">
-              CLEAR
+                CLEAR
         </div>
+        <div class="bar-text">OUT</div>
         <div :class="{selected:true}"
               v-for="output in midi.outputs"
               @click="toggleOutput(output)"

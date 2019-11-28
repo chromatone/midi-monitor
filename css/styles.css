@@ -13,13 +13,6 @@ body {
   font-family: 'Ubuntu', sans-serif;
 }
 
-.chromatoneAd {
-  position:absolute;
-  top:0;
-  right:0;
-  margin:6px;
-}
-
 a {
   text-decoration: none;
 }
@@ -140,13 +133,14 @@ font-size:12px;
 .cc-bar .cc-key {
   display:flex;
   user-select: none;
+  z-index:30;
 }
 
 .cc-bar .value {
   background-color: #bbb;
   position:absolute;
   height:100%;
-  z-index:-1;
+  z-index:20;
 }
 
 .midi-notes.channel-name {
