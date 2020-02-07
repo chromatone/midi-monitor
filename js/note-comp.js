@@ -12,7 +12,7 @@ export default {
           @mousemove="change(note)"
           @touchmove="change(note)"
        :style="{backgroundColor:color,order:127-note.number}"   class="midi-notes">
-      {{note.name}}{{note.octave}}
+      {{note.name}}{{note.octave}}({{note.number}})
     </div>
   `,
   props: ['note','active'],
