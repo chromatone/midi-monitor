@@ -41,22 +41,21 @@ export default {
       inCc:null,
       inputs:WebMidi.inputs,
       outputs:WebMidi.outputs,
-      links: {
-        '11055499': {
-          ids:['64108181', '10003316']
-        },
-        '-2018769937': {
-          ids: ['971782585']
-        },
-        '-127761031': {
-          ids: ['971782585', '10003316']
-        }
-      }
+      links: {},
     }
   },
   watch: {
     inputs(inputs) {
       this.buildLinks()
+    }
+  },
+  mounted() {
+    if (localStorage.getItem('links')) {
+      try {
+        this.links = JSON.parse(localStorage.getItem('links'));
+      } catch(e) {
+        localStorage.removeItem('links');
+      }
     }
   },
   methods: {
@@ -69,19 +68,21 @@ export default {
       }
     },
     toggleLink(inId,outId) {
-      if (!this.links[inId]) {this.$set(this.links, inId ,{ids:[]})};
+      if (!this.links[inId]) {
+        this.$set(this.links, inId ,{ids:[]})
+      };
       let link = this.links[inId];
       if (!link.ids.includes(outId)) {
         link.ids.push(outId)
       } else {
         link.ids.splice(link.ids.indexOf(outId),1);
       }
+      localStorage.setItem('links',JSON.stringify(this.links))
       this.buildLinks();
     },
     getLinks(id) {
       return this.links.filter(link => link.input==this.device.id)
     },
-
     buildLinks() {
       WebMidi.removeListener();
 
@@ -106,6 +107,7 @@ export default {
         })
 
         let link = this.links[input.id];
+
         if (link) {
 
           this.$set(link,'outputs', []);
