@@ -1,4 +1,4 @@
-import WebMidi from "./webmidi.js"
+
 import {inNote, inCc} from './midi-message.js'
 
 export default {
@@ -7,9 +7,13 @@ export default {
   },
   template:`
   <div v-if="input && input!='APP'" class="bar second">
+
     <in-note :note="inNote"></in-note>
+
     <in-cc :cc="inCc"></in-cc>
-    <div class="bar-text">OUT</div>
+
+    <div class="bar-text">TO</div>
+
     <div class="bar">
       <div :class="{selected:checkLink(input.id,output.id)}"
             v-for="output in outputs"
@@ -19,6 +23,7 @@ export default {
             class="status">
         {{output.name}}
       </div>
+
     </div>
   </div>
   `,
@@ -75,14 +80,19 @@ export default {
 
     buildLinks() {
       WebMidi.removeListener();
+
       this.inputs.forEach((input) => {
+
         input.on('noteon','all',(event) => {
           this.inNote = {
             channel: event.channel,
             name: event.note.name,
-            octave: event.note.octave
+            octave: event.note.octave,
+            number: event.note.number,
+            velocity: event.note.velocity,
           }
         })
+
         input.on('controlchange','all', (event) => {
           this.inCc={
             channel: event.channel,
@@ -109,9 +119,6 @@ export default {
             }
 
           })
-
-
-
 
         }
       });

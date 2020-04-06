@@ -1,4 +1,4 @@
-import WebMidi from "./webmidi.js"
+
 import router from "./router.js"
 
 export default {
@@ -9,10 +9,20 @@ export default {
     <div class="midi-bus">
 
       <div class="bar">
-        <div class="status" :class="{'active':midi.supported, 'error':!midi.supported, 'selected':selected=='APP'}"  @click="selected=='APP' ? selected=null : selected='APP'"><span v-if="!midi.inputs.length">CONNECT </span>MIDI<a target="_blank" href="https://caniuse.com/#search=web%20midi" v-if="!midi.supported"> NOT SUPPORTED</a>
+
+        <div class="status" :class="{'active':midi.supported, 'error':!midi.supported, 'selected':selected=='APP'}"  @click="selected=='APP' ? selected=null : selected='APP'">
+          <span v-if="!midi.inputs.length">CONNECT </span>MIDI<a target="_blank" href="https://caniuse.com/#search=web%20midi" v-if="!midi.supported"> NOT SUPPORTED</a>
         </div>
-        <div v-if="midi.inputs.length" class="bar-text">IN</div>
-        <div @click="selected==input ? selected=null : selected=input" v-for="input in midi.inputs" class="status" :class="{selected:input==selected}">{{input.name}}</div>
+
+        <div v-if="midi.inputs.length" class="bar-text">FROM</div>
+
+        <div
+          @click="selected==input ? selected=null : selected=input"
+          v-for="input in midi.inputs"
+          class="status" :class="{selected:input==selected}">
+          {{input.name}}
+        </div>
+
       </div>
       <div v-if="selected=='APP'" class="bar second">
 
@@ -25,8 +35,10 @@ export default {
         <div class="status" @click="clear()">
                 CLEAR
         </div>
-        <div class="bar-text">OUT</div>
-        <div :class="{selected:true}"
+
+        <div class="bar-text">TO</div>
+
+        <div :class="{selected:activeOutputs[output.id]}"
               v-for="output in midi.outputs"
               @click="toggleOutput(output)"
               :key="output.id"
@@ -54,30 +66,29 @@ export default {
       inputs.forEach((input) => {
         this.setListeners(input)
       })
+    },
+    'midi.outputs': function (outputs) {
+      outputs.forEach((output) => {
+        this.$set(this.activeOutputs,output.id,output)
+      })
     }
   },
   methods: {
-    checkOutput(output) {
-      console.log(this.activeOutputs[output.id])
-      return true
-    },
     toggleOutput(output) {
-
       if (!this.activeOutputs[output.id]) {
-        this.activeOutputs[output.id]=output
+        this.$set(this.activeOutputs,output.id,output)
       } else {
         this.activeOutputs[output.id]=null;
         delete this.activeOutputs[output.id]
       }
-      console.log(this.activeOutputs)
     },
     start() {
-      this.midi.outputs.forEach(output => {
+      Object.values(this.activeOutputs).forEach(output => {
         output.sendStart()
       })
     },
     stop() {
-      this.midi.outputs.forEach(output => {
+      Object.values(this.activeOutputs).forEach(output => {
         output.sendStop()
       })
     },
@@ -138,14 +149,10 @@ export default {
   //    input.addListener('stop', 'all', this.reset)
     }
   },
-  computed: {
-
-  },
   created() {
     if (WebMidi.supported) {
       WebMidi.enable();
     }
-
   },
   beforeDestroy() {
     this.midi.inputs.forEach(input => {

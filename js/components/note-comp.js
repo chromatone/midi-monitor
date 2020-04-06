@@ -1,7 +1,3 @@
-import WebMidi from "./webmidi.js"
-
-
-
 export default {
   template: `
     <div @mousedown="play(note)"
@@ -11,7 +7,8 @@ export default {
           @touchend="stop(note)"
           @mousemove="change(note)"
           @touchmove="change(note)"
-       :style="{backgroundColor:color,order:127-note.number}"   class="midi-notes">
+          :style="{backgroundColor:color,order:127-note.number}"   
+          class="midi-notes">
       {{note.name}}{{note.octave}}({{note.number}})
     </div>
   `,
