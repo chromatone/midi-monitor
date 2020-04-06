@@ -2,11 +2,18 @@
 import {inNote, inCc} from './midi-message.js'
 
 export default {
+  props:['input'],
   components:{
     inNote, inCc
   },
   template:`
   <div v-if="input && input!='APP'" class="bar second">
+
+    <div
+      class="status note"
+      :class="{selected:clock==input.id}"
+      @click="clock==input.id ? clock=null : clock=input.id"
+      >CLOCK</div>
 
     <in-note :note="inNote"></in-note>
 
@@ -27,9 +34,9 @@ export default {
     </div>
   </div>
   `,
-  props:['input'],
   data() {
     return {
+      clock:null,
       inNote:null,
       inCc:null,
       inputs:WebMidi.inputs,
@@ -46,9 +53,6 @@ export default {
         }
       }
     }
-  },
-  created() {
-
   },
   watch: {
     inputs(inputs) {
@@ -103,6 +107,7 @@ export default {
 
         let link = this.links[input.id];
         if (link) {
+
           this.$set(link,'outputs', []);
           link.ids.forEach((outId) => {
             let output = WebMidi.getOutputById(outId);
@@ -112,12 +117,19 @@ export default {
           })
 
           input.on('midimessage','all', (event) => {
-            if(event.data!=248) {
-              link.outputs.forEach(output => {
-                output._midiOutput.send(event.data,event.timestamp)
-              })
-            }
+            if (event.data==248) {return}
 
+            link.outputs.forEach(output => {
+              output._midiOutput.send(event.data,event.timestamp)
+            })
+          })
+
+          input.on('clock','all', (event) => {
+            if (this.clock != input.id) {return}
+
+            link.outputs.forEach(output => {
+              output.sendClock({time:event.timestamp})
+            })
           })
 
         }
