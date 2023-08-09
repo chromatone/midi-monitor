@@ -1,29 +1,24 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8" />
-		<title>MIDI monitor</title>
-		<meta
-			name="viewport"
-			content="width=device-width, initial-scale=1, user-scalable=no"
-		/>
-		<link rel="stylesheet" href="css/styles.css" />
-		<script src="js/assets/vue.min.js"></script>
-		<script src="js/assets/webmidi.min.js"></script>
-		<script
-			async
-			defer
-			data-website-id="ad5a6168-9233-489f-9b85-58f6627084d3"
-			src="https://stats.defucc.me/umami.js"
-		></script>
-	</head>
 
-	<body>
-		<div id="midi-monitor">
-			<midi-bus :channels.sync="channels"></midi-bus>
-			<midi-monitor :channels="channels"></midi-monitor>
-		</div>
+<head>
+	<meta charset="utf-8" />
+	<title>MIDI monitor</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="css/styles.css" />
+	<script src="js/assets/vue.min.js"></script>
+	<script src="js/assets/webmidi.min.js"></script>
+	<script async defer data-website-id="07039690-8627-4888-bbe3-2047fd7ce785"
+		src="https://stats.chromatone.center/script.js"></script>
+</head>
 
-		<script type="module" src="js/app.js"></script>
-	</body>
+<body>
+	<div id="midi-monitor">
+		<midi-bus :channels.sync="channels"></midi-bus>
+		<midi-monitor :channels="channels"></midi-monitor>
+	</div>
+
+	<script type="module" src="js/app.js"></script>
+</body>
+
 </html>
