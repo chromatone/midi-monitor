@@ -26,7 +26,7 @@ const chords = computed(() => {
 </script>
 
 <template lang="pug">
-.fullscreen-container.w-full.h-full.flex.flex-col(@mouseleave="active = false")
+.fullscreen-container.w-full.h-full.flex.flex-col(@mouseleave="active = false") 
   .flex.w-full.flex-1
     .flex.flex-col.flex-1.text-center.relative(
       v-for="(ch, chNum) in channels", 
