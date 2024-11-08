@@ -1,0 +1,62 @@
+{
+	"id": "midi-v.0.2.4",
+	"name": "Chromatone MIDI",
+	"short_name": "MIDI Monitor",
+	"description": "MIDI protocol messages analysis, routing and recording",
+	"start_url": "/",
+	"background_color": "#777",
+	"theme_color": "#777",
+	"display": "standalone",
+	"orientation": "any",
+	"display_override": ["window-controls-overlay", "minimal-ui", "standalone"],
+	"handle_links": "preferred",
+	"prefer_related_applications": false,
+	"categories": ["music", "audio", "tools"],
+	"icons": [
+		{
+			"src": "./logo.svg",
+			"sizes": "any",
+			"type": "image/svg+xml",
+			"purpose": "any"
+		},
+		{
+			"src": "./logo.png",
+			"sizes": "1600x1600",
+			"type": "image/png",
+			"purpose": "any"
+		},
+		{
+			"src": "./logo.png",
+			"sizes": "512x512",
+			"type": "image/png",
+			"purpose": "any"
+		},
+		{
+			"src": "./logo.png",
+			"sizes": "192x192",
+			"type": "image/png"
+		},
+		{
+			"src": "./logo.png",
+			"sizes": "48x48",
+			"type": "image/png"
+		}
+	],
+	"screenshots": [
+		{
+			"src": "./screencapture.png",
+			"type": "image/png",
+			"sizes": "1280x720",
+			"form_factor": "wide"
+		},
+		{
+			"src": "./screencapture.jpg",
+			"type": "image/jpg",
+			"sizes": "720x1280",
+			"form_factor": "narrow"
+		}
+	],
+	"launch_handler": {
+		"client_mode": ["focus-existing", "auto"]
+	}
+}

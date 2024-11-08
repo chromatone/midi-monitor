@@ -1,24 +1,46 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en" style="scroll-behavior: smooth;">
 
 <head>
-	<meta charset="utf-8" />
-	<title>MIDI monitor</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-	<link rel="stylesheet" href="css/styles.css" />
-	<script src="js/assets/vue.min.js"></script>
-	<script src="js/assets/webmidi.min.js"></script>
-	<script async defer data-website-id="07039690-8627-4888-bbe3-2047fd7ce785"
-		src="https://stats.chromatone.center/script.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>MIDI monitor by Chromatone</title>
+  <meta name="theme-color" content="black">
+  <meta name="application-name" content="MIDI monitor">
+  <meta name="author" content="Denis Starov">
+  <meta name="creator" content="Chromatone">
+  <meta name="description" content="MIDI bus signal analysis and routing tool">
+  <meta property="og:title" content="Chromatone MIDI">
+  <meta property="og:site_name" content="Chromatone MIDI">
+  <meta property="og:description" content="MIDI bus signal analysis and routing tool">
+  <meta property="og:image" content="/screencapture.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:alt" content="Chromatone MIDI - Protocol Analysis tool">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:label1" content="Chromatone MIDI">
+  <meta name="twitter:label2" content="MIDI Monitor">
+  <meta name="twitter:site" content="@davay42">
+  <meta name="twitter:creator" content="@davay42">
+  <meta name="twitter:image:type" content="image/png">
+  <meta name="twitter:image" content="/screencapture.png">
+
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-touch-fullscreen" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Spectrogram">
+
+  <link rel="icon" type="image/svg+xml" href="/logo.svg">
+  <link rel="apple-touch-icon" href="/logo.png" sizes="512x512">
+
+  <link rel="manifest" href="/manifest.json">
+
+  <!-- Stats production build insert -->
+
 </head>
 
 <body>
-	<div id="midi-monitor">
-		<midi-bus :channels.sync="channels"></midi-bus>
-		<midi-monitor :channels="channels"></midi-monitor>
-	</div>
-
-	<script type="module" src="js/app.js"></script>
+  <div id="app"></div>
+  <script type="module" src="/src/main.js"></script>
 </body>
 
 </html>
