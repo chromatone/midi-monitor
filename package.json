@@ -37,7 +37,7 @@
 		"@vueuse/math": "^11.2.0",
 		"floating-vue": "^5.2.2",
 		"tonal": "^6.3.0",
-		"use-chromatone": "^2.9.7",
+		"use-chromatone": "2.9.8-0",
 		"vue": "^3.5.12"
 	},
 	"devDependencies": {

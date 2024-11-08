@@ -88,7 +88,7 @@ const { midi, stopAll, midiAttack, midiRelease, outputs, available } = useMidi()
         select.bg-transparent.text-xl.font-bold(v-model="midi.channel")
           option(v-for="n in 16" :key="n" :value="n") {{ n }}
 
-    midi-filter-channels(style="flex: 1 1 100px")
+      midi-filter-channels(style="flex: 1 1 100px")
 
     slot.is-group.mx-1.p-1
 </template>

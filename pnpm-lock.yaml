@@ -27,8 +27,8 @@ importers:
         specifier: ^6.3.0
         version: 6.3.0
       use-chromatone:
-        specifier: ^2.9.7
-        version: 2.9.7(focus-trap@7.6.0)(rollup@4.24.4)(vite@5.4.10(terser@5.36.0))(vitepress@1.5.0(@algolia/client-search@5.13.0)(drauu@0.4.1)(fuse.js@7.0.0)(postcss@8.4.47)(search-insights@2.17.2)(sortablejs@1.15.3)(terser@5.36.0))
+        specifier: 2.9.8-0
+        version: 2.9.8-0(@elemaudio/core@3.2.1)(@elemaudio/web-renderer@3.2.3)(focus-trap@7.6.0)(rollup@4.24.4)(tone@15.0.4)(vite@5.4.10(terser@5.36.0))(vitepress@1.5.0(@algolia/client-search@5.13.0)(drauu@0.4.1)(fuse.js@7.0.0)(postcss@8.4.47)(search-insights@2.17.2)(sortablejs@1.15.3)(terser@5.36.0))(vue@3.5.12)(webmidi@3.1.11)
       vue:
         specifier: ^3.5.12
         version: 3.5.12
@@ -2853,9 +2853,15 @@ packages:
   uri-js@4.4.1:
     resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}
 
-  use-chromatone@2.9.7:
-    resolution: {integrity: sha512-HSZUK8sySYFGD9N68Yf0sDJmWxeEPAUvbRFqsL1+XovfDeeWryYqTNWrgI7JY00GHGUc22fWswhOrNUlu6AaGQ==}
+  use-chromatone@2.9.8-0:
+    resolution: {integrity: sha512-fSYM8hHIRbbssH/EHACyNYNvHstoaiYcXkpoU5IrdX1WR2Wht9YA0uyNd2rCpz2aY/UQ4+NKeQYCmUHlqL3Zqw==}
     engines: {node: ^20.x}
+    peerDependencies:
+      '@elemaudio/core': ^3.2.1
+      '@elemaudio/web-renderer': ^3.2.3
+      tone: ^15.0.4
+      vue: ^3.5.12
+      webmidi: ^3.1.11
 
   utrie@1.0.2:
     resolution: {integrity: sha512-1MLa5ouZiOmQzUbjbu9VmjLzn1QLXBhwpUa7kdLUQK+KQ5KA9I1vk5U4YHe/X2Ch7PYnJfWuWT+VbuxbGwljhw==}
@@ -6222,7 +6228,7 @@ snapshots:
     dependencies:
       punycode: 2.3.1
 
-  use-chromatone@2.9.7(focus-trap@7.6.0)(rollup@4.24.4)(vite@5.4.10(terser@5.36.0))(vitepress@1.5.0(@algolia/client-search@5.13.0)(drauu@0.4.1)(fuse.js@7.0.0)(postcss@8.4.47)(search-insights@2.17.2)(sortablejs@1.15.3)(terser@5.36.0)):
+  use-chromatone@2.9.8-0(@elemaudio/core@3.2.1)(@elemaudio/web-renderer@3.2.3)(focus-trap@7.6.0)(rollup@4.24.4)(tone@15.0.4)(vite@5.4.10(terser@5.36.0))(vitepress@1.5.0(@algolia/client-search@5.13.0)(drauu@0.4.1)(fuse.js@7.0.0)(postcss@8.4.47)(search-insights@2.17.2)(sortablejs@1.15.3)(terser@5.36.0))(vue@3.5.12)(webmidi@3.1.11):
     dependencies:
       '@elemaudio/core': 3.2.1
       '@elemaudio/web-renderer': 3.2.3

@@ -1,13 +1,18 @@
 <script setup>
+import { useGesture } from '@vueuse/gesture';
+import { ref } from 'vue';
+
 const props = defineProps({
   cc: { type: Object, default: () => { } }
 });
 
 const emit = defineEmits(['update'])
 
+const bar = ref()
+
 let prev = 0
 
-function dragger({ movement: [x], dragging }) {
+function drag({ movement: [x], dragging }) {
   let diff = x / 2 - prev
   prev = x / 2
   if (!dragging) prev = 0
@@ -16,14 +21,28 @@ function dragger({ movement: [x], dragging }) {
   if (val < 0) val = 0
   emit('update', val)
 }
+
+useGesture({
+  onDrag(ev) {
+    ev?.event?.preventDefault()
+    drag(ev)
+  },
+  onWheel(ev) {
+    ev?.event?.preventDefault()
+    drag(ev)
+  }
+}, {
+  domTarget: bar,
+  eventOptions: { passive: false }
+})
 </script>
 
 <template lang="pug">
 .cc(
-  v-drag="dragger"
-)
+  ref="bar"
+  )
   .px-1.text-center.flex-1 {{ cc?.number }}
-  .absolute.h-full.z-10.bg-gray-500.top-0.bg-opacity-40.self-start(
+  .absolute.h-full.z-10.bg-dark-500.top-0.bg-opacity-40.self-start(
     :style="{ width: cc?.value * 100 + '%' }"
   )
 </template>
