@@ -1,0 +1,38 @@
+<script setup>
+import { noteColor, useMidi } from "use-chromatone"
+// import { Utilities } from 'webmidi'
+
+const { midi, log } = useMidi();
+
+// function sortNotes(notes) {
+//   if (!notes) return []
+//   let arr = Object.values(notes)
+//   return arr.sort((a, b) => {
+//     return a.number < b.number ? -1 : 1
+//   })
+// }
+</script>
+
+<template lang="pug">
+.flex.flex-col.gap-1.overflow-x-scroll.p-4.font-mono#screen
+  transition-group(
+    name="fall")
+    .flex.text-sm.fall.whitespace-nowrap(
+      v-for="ev in log" 
+      :key="ev"
+      )
+      .txt CH {{ ev.message?.channel }}
+      .txt {{ ev.message?.type }}
+      .txt {{ ev.data }}
+      .p-2(:style="{ backgroundColor: noteColor(ev.message.dataBytes[0] + 3 || 0) }")
+      //- .txt.whitespace-nowrap  {{ Utilities.toNoteIdentifier(ev.message.dataBytes[0] || 1) }}
+      .txt {{ ((ev.message.dataBytes[1]) / 127).toFixed(2) }}
+      
+</template>
+
+
+<style lang="postcss" scoped>
+.txt {
+  @apply p-1 flex-1;
+}
+</style>

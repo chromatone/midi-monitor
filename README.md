@@ -11,4 +11,11 @@ Click on [MIDI] button to play/stop midi sequencers, clear the monitor and selec
 
 The Web MIDI technology has been already implemented in Chrome and Opera on desktop and Android phones and tablets. For iOS devices there is a dedicated free [Web MIDI Browser](https://apps.apple.com/ru/app/web-midi-browser/id953846217). Get more compatibility info at [Caniuse.com](https://caniuse.com/#search=web%20midi). Internally the app uses [WebMidi.js](https://github.com/djipco/webmidi) for handling messages.
 
+## Tech Stack
+
+- Vue 3
+- Vite
+- UnoCSS
+
 ![](screencapture-chromatone-center-apps-web-audio-components-2019-11-21-20_18_36.png)
+
