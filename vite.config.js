@@ -3,6 +3,15 @@ import vue from '@vitejs/plugin-vue'
 import UnoCSS from 'unocss/vite'
 import { viteSingleFile } from "vite-plugin-singlefile"
 
+import {
+  transformerDirectives,
+  presetIcons,
+  presetUno,
+  extractorSplit,
+  presetTypography
+} from "unocss";
+import extractorPug from "@unocss/extractor-pug";
+
 export default defineConfig({
   base: './',
   server: {
@@ -15,9 +24,24 @@ export default defineConfig({
   },
   plugins: [
     vue(),
-    UnoCSS(),
     viteSingleFile(),
-    viteBuildScript()
+    viteBuildScript(),
+    UnoCSS(
+      {
+        transformers: [transformerDirectives()],
+        presets: [
+          presetIcons({
+            cdn: 'https://esm.sh/',
+            scale: 1.2,
+            extraProperties: {
+              "vertical-align": "middle",
+            },
+          }),
+          presetUno(),
+          presetTypography(),
+        ],
+        extractors: [extractorSplit, extractorPug()],
+      }),
   ],
 })
 
